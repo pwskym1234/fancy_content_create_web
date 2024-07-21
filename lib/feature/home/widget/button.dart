@@ -226,3 +226,31 @@ class UpdateContentButton extends StatelessWidget {
     );
   }
 }
+
+class FetchContentButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  const FetchContentButton({super.key, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomButton(
+      color: const Color.fromARGB(255, 255, 15, 239),
+      text: 'Fetch Content',
+      onPressed: () {},
+      height: 60,
+      width: 180,
+      strokeGradient: const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Color.fromARGB(255, 215, 215, 215),
+          Color.fromARGB(255, 255, 15, 239),
+          Color.fromARGB(255, 255, 15, 239),
+          Color.fromARGB(255, 255, 131, 15),
+          Color.fromARGB(255, 255, 231, 15),
+          Color.fromARGB(255, 105, 12, 255),
+        ],
+      ),
+    );
+  }
+}

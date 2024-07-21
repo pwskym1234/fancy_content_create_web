@@ -11,13 +11,13 @@ Future<void> createContentLogic({
   required WidgetRef ref,
 }) async {
   final contentTitleController = ref.read(contentTitleControllerProvider);
-  final categoryController = ref.read(categoryControllerProvider);
+  final categoryController = ref.read(categoryProvider);
   final qaController = ref.read(qaListControllerProvider);
   final apiService = ref.read(apiServiceProvider);
   final thumbnail = ref.read(thumbnailProvider);
   final description = ref.read(descriptionProvider);
   String contentTitle = contentTitleController.text;
-  String contentCategory = categoryController.text;
+  String contentCategory = categoryController;
   String qaText = qaController.text;
 
   List<String> newFormattedQAList = splitText(qaText);
@@ -25,11 +25,13 @@ Future<void> createContentLogic({
     return qa.replaceAll(RegExp(r'^\(\d+\)'), '').trim();
   }).toList();
 
-  ref.read(newFormattedQAListProvider.notifier).state = newFormattedQAList;
+  // ref
+  //     .read(newFormattedQAListProvider.notifier)
+  //     .updateFormattedQAList(newFormattedQAList);
 
   try {
     debugPrint(
-        'Creating content with contentTitle: $contentTitle and category: LOVE');
+        'Creating content with contentTitle: $contentTitle and category: $contentCategory');
     Response contentResponse = await apiService.createContent(
       contentTitle,
       contentCategory,
@@ -37,9 +39,12 @@ Future<void> createContentLogic({
       description: description,
     );
     int newContentIdFromResponse = contentResponse.data['id'];
-    ref.read(newContentIdFromResponseProvider.notifier).state =
-        newContentIdFromResponse;
+    ref
+        .read(newContentIdFromResponseProvider.notifier)
+        .updateContentId(newContentIdFromResponse);
     debugPrint('Content created with ID: $newContentIdFromResponse');
+    debugPrint(
+        'Content created with ID: ${ref.watch(newContentIdFromResponseProvider)}');
 
     Map<int, int> questionIds = {};
     Map<String, int> questionTextToIdMap = {};

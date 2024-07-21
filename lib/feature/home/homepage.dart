@@ -7,8 +7,6 @@ import 'package:fancy_content_creation_web/feature/home/content_QA_view/content_
 import 'package:fancy_content_creation_web/%08widgets/glassmorphicContainer.dart';
 import 'package:fancy_content_creation_web/feature/home/widget/textfield.dart';
 import 'package:fancy_content_creation_web/%08widgets/custom_buttons.dart';
-import 'package:fancy_content_creation_web/data/api_service.dart';
-import 'package:fancy_content_creation_web/data/token_storage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -45,6 +43,7 @@ class HomePageState extends ConsumerState<HomePage> {
       context: context,
       ref: ref,
     );
+    ref.read(qaListControllerProvider.notifier).clear();
   }
 
   @override

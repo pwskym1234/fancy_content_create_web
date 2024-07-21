@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'token_storage.dart'; // Import the TokenStorage
+import 'token_storage.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -34,9 +34,9 @@ class ApiService {
         'email': email,
         'password': password,
       },
-      onSendProgress: (count, total) {
-        log("send:$count");
-      },
+      // onSendProgress: (count, total) {
+      //   log("send:$count");
+      // },
       onReceiveProgress: (count, total) {
         log("recv:$count");
       },
@@ -54,8 +54,7 @@ class ApiService {
       html.File? description,
       int? points,
       String? introText}) async {
-    String? token =
-        TokenStorage().accessToken; // Ensure TokenStorage is defined
+    String? token = TokenStorage().accessToken;
 
     if (token == null) {
       throw Exception('Token is not available');

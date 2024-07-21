@@ -4,15 +4,46 @@ import 'package:universal_html/html.dart' as html;
 
 final contentTitleControllerProvider =
     Provider((ref) => TextEditingController());
-final qaListControllerProvider = Provider((ref) => TextEditingController());
+final qaListControllerProvider = StateNotifierProvider<
+    QAListControllerNotifierNotifier, TextEditingController>(
+  (ref) => QAListControllerNotifierNotifier(),
+);
 final introControllerProvider = Provider((ref) => TextEditingController());
 final contentIDControllerProvider = Provider((ref) => TextEditingController());
-final statusControllerProvider = Provider((ref) => TextEditingController());
-final categoryControllerProvider = Provider((ref) => TextEditingController());
 final statusProvider = StateProvider<String>((ref) => 'INACTIVE');
 final categoryProvider = StateProvider<String>((ref) => 'LOVE');
-final newFormattedQAListProvider = StateProvider<List<String>>((ref) => []);
-final newContentIdFromResponseProvider = StateProvider<int>((ref) => 0);
+final fetchedAnswerQuestionMapProvider = StateNotifierProvider<
+    FetchedAnswerQuestionMapNotifier, List<Map<dynamic, dynamic>>>(
+  (ref) => FetchedAnswerQuestionMapNotifier(),
+);
+final newContentIdFromResponseProvider =
+    StateNotifierProvider<ContentIdNotifier, int>((ref) => ContentIdNotifier());
+
+class QAListControllerNotifierNotifier
+    extends StateNotifier<TextEditingController> {
+  QAListControllerNotifierNotifier() : super(TextEditingController());
+
+  void clear() {
+    state.clear();
+  }
+}
+
+class ContentIdNotifier extends StateNotifier<int> {
+  ContentIdNotifier() : super(0);
+
+  void updateContentId(int newId) {
+    state = newId;
+  }
+}
+
+class FetchedAnswerQuestionMapNotifier
+    extends StateNotifier<List<Map<dynamic, dynamic>>> {
+  FetchedAnswerQuestionMapNotifier() : super([]);
+
+  void updateFetchedAnswerQuestionMap(List<Map<dynamic, dynamic>> newMap) {
+    state = newMap;
+  }
+}
 
 class ThumbnailNotifier extends StateNotifier<html.File?> {
   ThumbnailNotifier() : super(null);
