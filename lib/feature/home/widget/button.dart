@@ -30,10 +30,10 @@ class PickThumbnailButton extends StatelessWidget {
         children: [
           CustomButton(
             color: const Color.fromARGB(255, 255, 164, 28),
-            text: 'Pick Thumbnail',
+            text: 'Thumbnail',
             onPressed: pickImage,
             height: 60,
-            width: 180,
+            width: 140,
             strokeGradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -86,10 +86,10 @@ class PickDescriptionButton extends StatelessWidget {
         children: [
           CustomButton(
             color: const Color.fromARGB(255, 255, 164, 28),
-            text: 'Pick Description',
+            text: 'Description',
             onPressed: pickImage,
             height: 60,
-            width: 180,
+            width: 140,
             strokeGradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -141,10 +141,10 @@ class PickPreviewButton extends StatelessWidget {
         children: [
           CustomButton(
             color: const Color.fromARGB(255, 255, 164, 28),
-            text: 'Pick Description',
+            text: 'Preview',
             onPressed: pickImage,
             height: 60,
-            width: 180,
+            width: 140,
             strokeGradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -236,7 +236,7 @@ class FetchContentButton extends StatelessWidget {
     return CustomButton(
       color: const Color.fromARGB(255, 255, 15, 239),
       text: 'Fetch Content',
-      onPressed: () {},
+      onPressed: onPressed,
       height: 60,
       width: 180,
       strokeGradient: const LinearGradient(

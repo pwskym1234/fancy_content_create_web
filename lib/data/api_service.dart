@@ -41,10 +41,6 @@ class ApiService {
         log("recv:$count");
       },
     );
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = response.data;
-      TokenStorage().setTokens(responseData['access'], responseData['refresh']);
-    }
     return response;
   }
 

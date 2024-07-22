@@ -1,3 +1,5 @@
+import 'package:fancy_content_creation_web/%08widgets/custom_buttons.dart';
+import 'package:fancy_content_creation_web/feature/home/content_QA_view/qaView.dart';
 import 'package:fancy_content_creation_web/feature/home/logic/controller.dart';
 import 'package:fancy_content_creation_web/feature/home/logic/fetch_logic.dart';
 import 'package:fancy_content_creation_web/feature/home/widget/button.dart';
@@ -11,6 +13,13 @@ class ContentQaView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final contentId = ref.watch(newContentIdFromResponseProvider);
+
+    Future<void> fetchQAData() async {
+      await fetchQADataLogic(
+        context: context,
+        ref: ref,
+      );
+    }
 
     return Container(
       margin: const EdgeInsets.all(20),
@@ -36,22 +45,57 @@ class ContentQaView extends ConsumerWidget {
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                   Spacer(),
-                  FetchContentButton(
-                      onPressed: () => fetchQAData(context: context, ref: ref)),
+                  FetchContentButton(onPressed: fetchQAData),
                   SizedBox(width: 10),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  CustomButton(
+                      text: 'Select All',
+                      onPressed: () {},
+                      height: 50,
+                      width: 140,
+                      strokeGradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          const Color.fromARGB(255, 255, 255, 255),
+                          const Color.fromARGB(255, 0, 0, 0),
+                        ],
+                      ),
+                      color: const Color.fromARGB(255, 255, 255, 255)),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  CustomButton(
+                      text: 'Diselect All',
+                      onPressed: () {},
+                      height: 50,
+                      width: 140,
+                      strokeGradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          const Color.fromARGB(255, 255, 255, 255),
+                          const Color.fromARGB(255, 0, 0, 0),
+                        ],
+                      ),
+                      color: const Color.fromARGB(255, 255, 255, 255)),
+                  SizedBox(
+                    width: 10,
+                  )
                 ],
               ),
               Expanded(
                 child: Center(
-                  child: Text(
-                    'Column Content',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                    child: QAView(
+                  qaData: ref.watch(fetchedAnswerQuestionMapProvider),
+                )),
               ),
             ],
           ),

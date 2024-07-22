@@ -4,7 +4,7 @@ import 'package:fancy_content_creation_web/feature/home/logic/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-Future<void> fetchQAData({
+Future<void> fetchQADataLogic({
   required BuildContext context,
   required WidgetRef ref,
 }) async {
@@ -13,15 +13,14 @@ Future<void> fetchQAData({
   List<Map<String, dynamic>> questions = [];
   List<Map<String, dynamic>> answers = [];
 
-  // Fetch all questions with pagination
   int questionOffset = 0;
   bool questionHasMore = true;
   while (questionHasMore) {
     try {
+      debugPrint('${int.tryParse(contentIDController.text)}');
       Response questionResponse = await apiService.listQuestionForAdmin(
           int.tryParse(contentIDController.text) ?? 0, questionOffset, 100);
 
-      // Directly use the response data as a List
       List<Map<String, dynamic>> fetchedQuestions =
           List<Map<String, dynamic>>.from(questionResponse.data);
       questions.addAll(fetchedQuestions);

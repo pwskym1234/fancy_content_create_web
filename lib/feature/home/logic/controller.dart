@@ -18,6 +18,43 @@ final fetchedAnswerQuestionMapProvider = StateNotifierProvider<
 );
 final newContentIdFromResponseProvider =
     StateNotifierProvider<ContentIdNotifier, int>((ref) => ContentIdNotifier());
+final previewProvider =
+    StateNotifierProvider<PreviewNotifier, List<html.File>>((ref) {
+  return PreviewNotifier();
+});
+final selectedQuestionIdsProvider =
+    StateNotifierProvider<SelectedQuestionIdsNotifier, List<int>>((ref) {
+  return SelectedQuestionIdsNotifier();
+});
+final groupedQADataProvider = StateNotifierProvider<GroupedQADataNotifier,
+    List<List<Map<dynamic, dynamic>>>>(
+  (ref) => GroupedQADataNotifier(),
+);
+final currentGroupProvider =
+    StateNotifierProvider<CurrentGroupNotifier, List<Map<dynamic, dynamic>>>(
+  (ref) => CurrentGroupNotifier(),
+);
+
+class CurrentGroupNotifier extends StateNotifier<List<Map<dynamic, dynamic>>> {
+  CurrentGroupNotifier() : super([]);
+
+  void addQAData(Map<dynamic, dynamic> qa) {
+    state = [...state, qa];
+  }
+
+  void clearQAData() {
+    state = [];
+  }
+}
+
+class GroupedQADataNotifier
+    extends StateNotifier<List<List<Map<dynamic, dynamic>>>> {
+  GroupedQADataNotifier() : super([]);
+
+  void addGroupedQAData(List<Map<dynamic, dynamic>> group) {
+    state = [...state, group];
+  }
+}
 
 class QAListControllerNotifierNotifier
     extends StateNotifier<TextEditingController> {
@@ -87,7 +124,22 @@ class PreviewNotifier extends StateNotifier<List<html.File>> {
   }
 }
 
-final previewProvider =
-    StateNotifierProvider<PreviewNotifier, List<html.File>>((ref) {
-  return PreviewNotifier();
-});
+class SelectedQuestionIdsNotifier extends StateNotifier<List<int>> {
+  SelectedQuestionIdsNotifier() : super([]);
+
+  void updateQuestionId(List<int> newList) {
+    state = newList;
+  }
+
+  void addQuestionId(int id) {
+    state = [...state, id];
+  }
+
+  void removeQuestionId(int id) {
+    state = state.where((selectedQuestion) => selectedQuestion != id).toList();
+  }
+
+  void clearQuestionId() {
+    state = [];
+  }
+}

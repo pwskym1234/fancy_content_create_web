@@ -18,10 +18,14 @@ class LoginLogic {
 
     try {
       final response = await read(apiServiceProvider).login(email, password);
-
+      debugPrint(response.headers.toString());
+      debugPrint(response.statusCode.toString());
       if (response.statusCode == 200) {
+        debugPrint("0");
         final Map<String, dynamic> responseData =
             response.data as Map<String, dynamic>;
+        debugPrint("1");
+        debugPrint(responseData.toString());
 
         TokenStorage()
             .setTokens(responseData['access'], responseData['refresh']);
