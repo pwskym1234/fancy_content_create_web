@@ -9,7 +9,8 @@ Future<void> fetchQADataLogic({
   required WidgetRef ref,
 }) async {
   final apiService = ref.read(apiServiceProvider);
-  final contentIDController = ref.read(contentIDControllerProvider);
+  // final contentIDController = ref.watch(contentIDControllerProvider);
+  final contentIDController = ref.watch(newContentIdFromResponseProvider);
   List<Map<String, dynamic>> questions = [];
   List<Map<String, dynamic>> answers = [];
 
@@ -17,9 +18,9 @@ Future<void> fetchQADataLogic({
   bool questionHasMore = true;
   while (questionHasMore) {
     try {
-      debugPrint('${int.tryParse(contentIDController.text)}');
+      debugPrint('$contentIDController');
       Response questionResponse = await apiService.listQuestionForAdmin(
-          int.tryParse(contentIDController.text) ?? 0, questionOffset, 100);
+          contentIDController ?? 0, questionOffset, 100);
 
       List<Map<String, dynamic>> fetchedQuestions =
           List<Map<String, dynamic>>.from(questionResponse.data);
@@ -49,7 +50,7 @@ Future<void> fetchQADataLogic({
   while (answerHasMore) {
     try {
       Response answerResponse = await apiService.listAnswerForAdmin(
-          int.tryParse(contentIDController.text) ?? 0, answerOffset, 100);
+          contentIDController ?? 0, answerOffset, 100);
 
       // Directly use the response data as a List
       List<Map<String, dynamic>> fetchedAnswers =

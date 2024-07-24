@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:fancy_content_creation_web/data/api_service.dart';
 import 'package:fancy_content_creation_web/feature/home/logic/controller.dart';
+import 'package:fancy_content_creation_web/feature/home/logic/fetch_logic.dart';
+import 'package:fancy_content_creation_web/feature/home/logic/small_logics.dart';
+import 'package:fancy_content_creation_web/feature/home/logic/update_content_logic.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:universal_html/html.dart' as html;
-
 import 'package:flutter/material.dart';
 
 Future<void> createContentLogic({
@@ -26,10 +28,6 @@ Future<void> createContentLogic({
   newFormattedQAList = newFormattedQAList.map((qa) {
     return qa.replaceAll(RegExp(r'^\(\d+\)'), '').trim();
   }).toList();
-
-  // ref
-  //     .read(newFormattedQAListProvider.notifier)
-  //     .updateFormattedQAList(newFormattedQAList);
 
   try {
     debugPrint(
@@ -101,10 +99,22 @@ Future<void> createContentLogic({
 
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Q&A submitted successfully')),
+        const SnackBar(content: Text('Created successfully')),
       );
     }
-    debugPrint('Q&A submitted successfully');
+    debugPrint('Created successfully');
+
+    await fetchQADataLogic(
+      context: context,
+      ref: ref,
+    );
+    ref
+        .watch(selectedQuestionIdsProvider.notifier)
+        .selectAllQuestions(ref.watch(groupedQADataProvider));
+    await updateContentLogic(
+      context: context,
+      ref: ref,
+    );
   } catch (e) {
     debugPrint('Error occurred: $e');
     if (context.mounted) {
@@ -113,38 +123,4 @@ Future<void> createContentLogic({
       );
     }
   }
-}
-
-String findPreviousQuestionText(int answerIndex, List<String> formattedQAList) {
-  for (int i = answerIndex; i >= 0; i--) {
-    if (formattedQAList[i].startsWith('Q:')) {
-      return formattedQAList[i].substring(2).trim();
-    }
-  }
-  return 'No previous question';
-}
-
-String findNextQuestionText(int answerIndex, List<String> formattedQAList) {
-  for (int i = answerIndex + 1; i < formattedQAList.length; i++) {
-    if (formattedQAList[i].startsWith('Q:')) {
-      return formattedQAList[i].substring(2).trim();
-    }
-  }
-  return 'No next question';
-}
-
-List<String> splitText(String text) {
-  debugPrint('Input text: $text');
-
-  List<String> questionsAndAnswers = text.split(RegExp(r'(?=Q:)|(?=A:)'));
-  debugPrint('Split into questions and answers: $questionsAndAnswers');
-
-  List<String> qaList = [];
-
-  for (String qa in questionsAndAnswers) {
-    qaList.add(qa.trim());
-  }
-
-  debugPrint('Formatted QA List: $qaList');
-  return qaList;
 }

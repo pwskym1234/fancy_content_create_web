@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:fancy_content_creation_web/data/api_service.dart';
 import 'package:fancy_content_creation_web/feature/home/logic/controller.dart';
 import 'package:fancy_content_creation_web/feature/home/logic/create_content_logic.dart';
+import 'package:fancy_content_creation_web/feature/home/logic/small_logics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:universal_html/html.dart' as html;
 
@@ -14,7 +15,7 @@ Future<void> updateContentLogic({
   final contentTitleController = ref.read(contentTitleControllerProvider);
   final introController = ref.read(introControllerProvider);
   final qaController = ref.read(qaListControllerProvider);
-  final contentIDController = ref.read(contentIDControllerProvider);
+  final contentIDController = ref.read(newContentIdFromResponseProvider);
   final categoryController = ref.read(categoryProvider);
   final statusController = ref.read(statusProvider);
   final apiService = ref.read(apiServiceProvider);
@@ -25,20 +26,20 @@ Future<void> updateContentLogic({
   String qaText = qaController.text;
   String introText = introController.text;
   String titleText = contentTitleController.text;
-  int? contentID = int.tryParse(contentIDController.text);
+  int? contentID = contentIDController;
   String? status =
       statusController.isNotEmpty == true ? statusController : null;
   String? category =
       categoryController.isNotEmpty == true ? categoryController : null;
 
-  if (contentID == null) {
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Content ID must be a valid integer')),
-      );
-    }
-    return;
-  }
+  // if (contentID == null) {
+  //   if (context.mounted) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text('Content ID must be a valid integer')),
+  //     );
+  //   }
+  //   return;
+  // }
 
   List<String> newFormattedQAList = splitText(qaText);
   newFormattedQAList = newFormattedQAList.map((qa) {

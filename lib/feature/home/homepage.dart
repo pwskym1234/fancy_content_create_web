@@ -45,6 +45,7 @@ class HomePageState extends ConsumerState<HomePage> {
       ref: ref,
     );
     ref.read(qaListControllerProvider.notifier).clear();
+    ref.read(selectedQuestionIdsProvider.notifier).clearQuestionId();
   }
 
   Future<void> updateContent() async {
