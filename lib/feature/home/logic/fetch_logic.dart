@@ -113,7 +113,8 @@ Future<void> fetchQADataLogic({
     ref
         .read(fetchedAnswerQuestionMapProvider.notifier)
         .updateFetchedAnswerQuestionMap(answerQuestionMap.values.toList());
-
+    debugPrint(
+        "Final answerQuestionMap: ${ref.read(fetchedAnswerQuestionMapProvider)}");
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Fetched successfully')),
@@ -128,4 +129,29 @@ Future<void> fetchQADataLogic({
       );
     }
   }
+
+  try {
+    final fetchedData = ref.watch(fetchedAnswerQuestionMapProvider);
+
+    for (var qa in fetchedData) {
+      ref.watch(currentGroupProvider.notifier).addQAData(qa);
+      if (qa['next_question_id'] == '' && qa['next_question_text'] == '') {
+        ref
+            .watch(groupedQADataProvider.notifier)
+            .addGroupedQAData(ref.watch(currentGroupProvider));
+        ref.watch(currentGroupProvider.notifier).clearQAData();
+      }
+    }
+
+    if (ref.watch(currentGroupProvider).isNotEmpty) {
+      ref
+          .watch(groupedQADataProvider.notifier)
+          .addGroupedQAData(ref.watch(currentGroupProvider));
+    }
+
+    debugPrint("Received qaData: $fetchedData");
+
+    debugPrint(
+        "Number of created groups: ${ref.watch(groupedQADataProvider).length}");
+  } catch (e) {}
 }

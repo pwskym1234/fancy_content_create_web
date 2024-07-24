@@ -55,47 +55,26 @@ class ContentQaView extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  CustomButton(
-                      text: 'Select All',
-                      onPressed: () {},
-                      height: 50,
-                      width: 140,
-                      strokeGradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          const Color.fromARGB(255, 255, 255, 255),
-                          const Color.fromARGB(255, 0, 0, 0),
-                        ],
-                      ),
-                      color: const Color.fromARGB(255, 255, 255, 255)),
+                  SelectAllButton(onPressed: () {
+                    ref
+                        .watch(selectedQuestionIdsProvider.notifier)
+                        .selectAllQuestions(ref.watch(groupedQADataProvider));
+                  }),
                   SizedBox(
                     width: 10,
                   ),
-                  CustomButton(
-                      text: 'Diselect All',
-                      onPressed: () {},
-                      height: 50,
-                      width: 140,
-                      strokeGradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          const Color.fromARGB(255, 255, 255, 255),
-                          const Color.fromARGB(255, 0, 0, 0),
-                        ],
-                      ),
-                      color: const Color.fromARGB(255, 255, 255, 255)),
+                  DiselectAllButton(onPressed: () {
+                    ref
+                        .watch(selectedQuestionIdsProvider.notifier)
+                        .clearQuestionId();
+                  }),
                   SizedBox(
                     width: 10,
                   )
                 ],
               ),
               Expanded(
-                child: Center(
-                    child: QAView(
-                  qaData: ref.watch(fetchedAnswerQuestionMapProvider),
-                )),
+                child: Center(child: QAView()),
               ),
             ],
           ),

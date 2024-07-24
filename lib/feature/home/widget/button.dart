@@ -254,3 +254,51 @@ class FetchContentButton extends StatelessWidget {
     );
   }
 }
+
+class SelectAllButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  const SelectAllButton({super.key, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomButton(
+      color: Color.fromARGB(255, 255, 255, 255),
+      text: 'Select All',
+      onPressed: onPressed,
+      height: 50,
+      width: 140,
+      strokeGradient: const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          const Color.fromARGB(255, 255, 255, 255),
+          const Color.fromARGB(255, 0, 0, 0),
+        ],
+      ),
+    );
+  }
+}
+
+class DiselectAllButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  const DiselectAllButton({super.key, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomButton(
+      color: Color.fromARGB(255, 255, 255, 255),
+      text: 'Diselect All',
+      onPressed: onPressed,
+      height: 50,
+      width: 140,
+      strokeGradient: const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          const Color.fromARGB(255, 255, 255, 255),
+          const Color.fromARGB(255, 0, 0, 0),
+        ],
+      ),
+    );
+  }
+}

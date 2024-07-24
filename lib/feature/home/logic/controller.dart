@@ -43,7 +43,9 @@ class CurrentGroupNotifier extends StateNotifier<List<Map<dynamic, dynamic>>> {
   }
 
   void clearQAData() {
+    // state.clear();
     state = [];
+    print('State cleared: $state');
   }
 }
 
@@ -141,5 +143,14 @@ class SelectedQuestionIdsNotifier extends StateNotifier<List<int>> {
 
   void clearQuestionId() {
     state = [];
+    // print('ID cleared: $state');
+  }
+
+  void selectAllQuestions(List<List<Map<dynamic, dynamic>>> groupedQAData) {
+    state = groupedQAData
+        .where((group) => group.isNotEmpty)
+        .map<int>((group) => group.first['question_id'] as int)
+        .toList();
+    // print('ID selected: $state');
   }
 }
