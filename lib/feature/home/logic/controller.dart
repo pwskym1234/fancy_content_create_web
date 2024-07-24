@@ -18,6 +18,15 @@ final fetchedAnswerQuestionMapProvider = StateNotifierProvider<
 );
 final newContentIdFromResponseProvider =
     StateNotifierProvider<ContentIdNotifier, int>((ref) => ContentIdNotifier());
+
+final descriptionProvider =
+    StateNotifierProvider<DescriptionNotifier, html.File?>((ref) {
+  return DescriptionNotifier();
+});
+final thumbnailProvider =
+    StateNotifierProvider<ThumbnailNotifier, html.File?>((ref) {
+  return ThumbnailNotifier();
+});
 final previewProvider =
     StateNotifierProvider<PreviewNotifier, List<html.File>>((ref) {
   return PreviewNotifier();
@@ -92,11 +101,6 @@ class ThumbnailNotifier extends StateNotifier<html.File?> {
   }
 }
 
-final thumbnailProvider =
-    StateNotifierProvider<ThumbnailNotifier, html.File?>((ref) {
-  return ThumbnailNotifier();
-});
-
 class DescriptionNotifier extends StateNotifier<html.File?> {
   DescriptionNotifier() : super(null);
 
@@ -104,11 +108,6 @@ class DescriptionNotifier extends StateNotifier<html.File?> {
     state = file;
   }
 }
-
-final descriptionProvider =
-    StateNotifierProvider<DescriptionNotifier, html.File?>((ref) {
-  return DescriptionNotifier();
-});
 
 class PreviewNotifier extends StateNotifier<List<html.File>> {
   PreviewNotifier() : super([]);

@@ -1,14 +1,14 @@
 import 'package:fancy_content_creation_web/%08widgets/custom_buttons.dart';
+import 'package:fancy_content_creation_web/feature/home/logic/controller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
+// import 'dart:html' as html;
 
-class PickThumbnailButton extends StatelessWidget {
-  final html.File? file;
-  final void Function(html.File) onPicked;
-  const PickThumbnailButton(
-      {super.key, required this.file, required this.onPicked});
+class PickThumbnailButton extends ConsumerWidget {
+  const PickThumbnailButton({super.key});
 
-  Future<void> pickImage() async {
+  Future<void> pickImage(WidgetRef ref) async {
     final input = html.FileUploadInputElement()..accept = 'image/*';
     input.click();
 
@@ -16,13 +16,14 @@ class PickThumbnailButton extends StatelessWidget {
       final files = input.files;
       if (files != null && files.isNotEmpty) {
         final html.File file = files.first;
-        onPicked(file);
+        ref.watch(thumbnailProvider.notifier).setThumbnail(file);
       }
     });
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final file = ref.watch(thumbnailProvider);
     return Container(
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(10),
@@ -31,7 +32,7 @@ class PickThumbnailButton extends StatelessWidget {
           CustomButton(
             color: const Color.fromARGB(255, 255, 164, 28),
             text: 'Thumbnail',
-            onPressed: pickImage,
+            onPressed: () => pickImage(ref),
             height: 60,
             width: 140,
             strokeGradient: const LinearGradient(
@@ -58,13 +59,12 @@ class PickThumbnailButton extends StatelessWidget {
   }
 }
 
-class PickDescriptionButton extends StatelessWidget {
-  final html.File? file;
-  final void Function(html.File) onPicked;
-  const PickDescriptionButton(
-      {super.key, required this.file, required this.onPicked});
+class PickDescriptionButton extends ConsumerWidget {
+  const PickDescriptionButton({
+    super.key,
+  });
 
-  Future<void> pickImage() async {
+  Future<void> pickImage(WidgetRef ref) async {
     final input = html.FileUploadInputElement()..accept = 'image/*';
     input.click();
 
@@ -72,13 +72,14 @@ class PickDescriptionButton extends StatelessWidget {
       final files = input.files;
       if (files != null && files.isNotEmpty) {
         final html.File file = files.first;
-        onPicked(file);
+        ref.watch(descriptionProvider.notifier).setDescription(file);
       }
     });
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final file = ref.watch(descriptionProvider);
     return Container(
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(10),
@@ -87,7 +88,7 @@ class PickDescriptionButton extends StatelessWidget {
           CustomButton(
             color: const Color.fromARGB(255, 255, 164, 28),
             text: 'Description',
-            onPressed: pickImage,
+            onPressed: () => pickImage(ref),
             height: 60,
             width: 140,
             strokeGradient: const LinearGradient(
@@ -114,12 +115,10 @@ class PickDescriptionButton extends StatelessWidget {
   }
 }
 
-class PickPreviewButton extends StatelessWidget {
+class PickPreviewButton extends ConsumerWidget {
   final html.File? file;
-  final void Function(html.File) onPicked;
-  const PickPreviewButton(
-      {super.key, required this.file, required this.onPicked});
-  Future<void> pickImage() async {
+  const PickPreviewButton({super.key, required this.file});
+  Future<void> pickImage(WidgetRef ref) async {
     final input = html.FileUploadInputElement()..accept = 'image/*';
     input.click();
 
@@ -127,13 +126,13 @@ class PickPreviewButton extends StatelessWidget {
       final files = input.files;
       if (files != null && files.isNotEmpty) {
         final html.File file = files.first;
-        onPicked(file);
+        ref.watch(previewProvider.notifier).addPreview(file);
       }
     });
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(10),
@@ -142,7 +141,7 @@ class PickPreviewButton extends StatelessWidget {
           CustomButton(
             color: const Color.fromARGB(255, 255, 164, 28),
             text: 'Preview',
-            onPressed: pickImage,
+            onPressed: () => pickImage(ref),
             height: 60,
             width: 140,
             strokeGradient: const LinearGradient(
@@ -200,14 +199,15 @@ class CreateContentButton extends StatelessWidget {
 }
 
 class UpdateContentButton extends StatelessWidget {
-  const UpdateContentButton({super.key});
+  final VoidCallback onPressed;
+  const UpdateContentButton({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return CustomButton(
       color: const Color.fromARGB(255, 15, 247, 255),
       text: 'Update Content',
-      onPressed: () {},
+      onPressed: onPressed,
       height: 80,
       width: 280,
       strokeGradient: const LinearGradient(

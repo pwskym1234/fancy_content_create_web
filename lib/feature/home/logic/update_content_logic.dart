@@ -1,49 +1,70 @@
 import 'package:dio/dio.dart';
 import 'package:fancy_content_creation_web/data/api_service.dart';
 import 'package:fancy_content_creation_web/feature/home/logic/controller.dart';
+import 'package:fancy_content_creation_web/feature/home/logic/create_content_logic.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:universal_html/html.dart' as html;
 
 import 'package:flutter/material.dart';
 
-Future<void> createContentLogic({
+Future<void> updateContentLogic({
   required BuildContext context,
   required WidgetRef ref,
 }) async {
   final contentTitleController = ref.read(contentTitleControllerProvider);
   final introController = ref.read(introControllerProvider);
-  final categoryController = ref.read(categoryProvider);
   final qaController = ref.read(qaListControllerProvider);
+  final contentIDController = ref.read(contentIDControllerProvider);
+  final categoryController = ref.read(categoryProvider);
+  final statusController = ref.read(statusProvider);
   final apiService = ref.read(apiServiceProvider);
   final thumbnail = ref.read(thumbnailProvider);
   final description = ref.read(descriptionProvider);
-  String contentTitle = contentTitleController.text;
-  String intro = introController.text;
-  String contentCategory = categoryController;
+  final firstQuestionList = ref.read(selectedQuestionIdsProvider);
+  final preview = ref.read(previewProvider);
   String qaText = qaController.text;
+  String introText = introController.text;
+  String titleText = contentTitleController.text;
+  int? contentID = int.tryParse(contentIDController.text);
+  String? status =
+      statusController.isNotEmpty == true ? statusController : null;
+  String? category =
+      categoryController.isNotEmpty == true ? categoryController : null;
+
+  if (contentID == null) {
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Content ID must be a valid integer')),
+      );
+    }
+    return;
+  }
 
   List<String> newFormattedQAList = splitText(qaText);
   newFormattedQAList = newFormattedQAList.map((qa) {
     return qa.replaceAll(RegExp(r'^\(\d+\)'), '').trim();
   }).toList();
 
-  // ref
-  //     .read(newFormattedQAListProvider.notifier)
-  //     .updateFormattedQAList(newFormattedQAList);
-
   try {
-    debugPrint(
-        'Creating content with contentTitle: $contentTitle and category: $contentCategory');
-    Response contentResponse = await apiService.createContent(
-        contentTitle, contentCategory,
-        thumbnail: thumbnail, description: description, introText: intro);
+    debugPrint('Updating content with contentID: $contentID');
+
+    Response contentResponse = await apiService.updateContent(
+      contentID,
+      thumbnail: thumbnail,
+      description: description,
+      status: status,
+      category: category,
+      previews: preview,
+      introText: introText.isNotEmpty ? introText : null,
+      title: titleText.isNotEmpty ? titleText : null,
+      firstQuestionList:
+          firstQuestionList.isNotEmpty ? firstQuestionList : null,
+    );
     int newContentIdFromResponse = contentResponse.data['id'];
     ref
         .read(newContentIdFromResponseProvider.notifier)
         .updateContentId(newContentIdFromResponse);
     debugPrint('Content created with ID: $newContentIdFromResponse');
-    debugPrint(
-        'Content created with ID: ${ref.watch(newContentIdFromResponseProvider)}');
 
     Map<int, int> questionIds = {};
     Map<String, int> questionTextToIdMap = {};
@@ -62,31 +83,16 @@ Future<void> createContentLogic({
       }
     }
 
-    for (int i = 0; i < newFormattedQAList.length; i++) {
-      String qa = newFormattedQAList[i];
+    for (String qa in newFormattedQAList) {
       if (qa.startsWith('A:')) {
         String answerText = qa.substring(2).trim();
-        bool hadQuote = false;
-        while (answerText.endsWith('"')) {
-          answerText = answerText.substring(0, answerText.length - 1).trim();
-          hadQuote = true;
-        }
-
-        int answerIndex = i;
-        debugPrint('answerindex: $answerIndex');
+        int answerIndex = newFormattedQAList.indexOf(qa);
         String previousQuestionText =
             findPreviousQuestionText(answerIndex, newFormattedQAList);
-        debugPrint('Creating previous question: $previousQuestionText');
+        String nextQuestionText =
+            findNextQuestionText(answerIndex, newFormattedQAList);
         int previousQuestionId = questionTextToIdMap[previousQuestionText] ?? 0;
-
-        String nextQuestionText = '';
-        int? nextQuestionId;
-
-        if (!hadQuote) {
-          nextQuestionText =
-              findNextQuestionText(answerIndex, newFormattedQAList);
-          nextQuestionId = questionTextToIdMap[nextQuestionText];
-        }
+        int? nextQuestionId = questionTextToIdMap[nextQuestionText];
 
         debugPrint('Creating answer: $answerText');
         debugPrint('Previous question ID: $previousQuestionId');
@@ -101,10 +107,10 @@ Future<void> createContentLogic({
 
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Q&A submitted successfully')),
+        const SnackBar(content: Text('Updated successfully')),
       );
     }
-    debugPrint('Q&A submitted successfully');
+    debugPrint('Updated successfully');
   } catch (e) {
     debugPrint('Error occurred: $e');
     if (context.mounted) {
@@ -113,38 +119,4 @@ Future<void> createContentLogic({
       );
     }
   }
-}
-
-String findPreviousQuestionText(int answerIndex, List<String> formattedQAList) {
-  for (int i = answerIndex; i >= 0; i--) {
-    if (formattedQAList[i].startsWith('Q:')) {
-      return formattedQAList[i].substring(2).trim();
-    }
-  }
-  return 'No previous question';
-}
-
-String findNextQuestionText(int answerIndex, List<String> formattedQAList) {
-  for (int i = answerIndex + 1; i < formattedQAList.length; i++) {
-    if (formattedQAList[i].startsWith('Q:')) {
-      return formattedQAList[i].substring(2).trim();
-    }
-  }
-  return 'No next question';
-}
-
-List<String> splitText(String text) {
-  debugPrint('Input text: $text');
-
-  List<String> questionsAndAnswers = text.split(RegExp(r'(?=Q:)|(?=A:)'));
-  debugPrint('Split into questions and answers: $questionsAndAnswers');
-
-  List<String> qaList = [];
-
-  for (String qa in questionsAndAnswers) {
-    qaList.add(qa.trim());
-  }
-
-  debugPrint('Formatted QA List: $qaList');
-  return qaList;
 }

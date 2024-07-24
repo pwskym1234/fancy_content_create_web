@@ -1,7 +1,7 @@
 import 'package:fancy_content_creation_web/feature/home/logic/controller.dart';
 import 'package:fancy_content_creation_web/feature/home/logic/create_content_logic.dart';
-import 'package:fancy_content_creation_web/feature/home/logic/fetch_logic.dart';
 import 'package:fancy_content_creation_web/feature/home/logic/login_logic.dart';
+import 'package:fancy_content_creation_web/feature/home/logic/update_content_logic.dart';
 import 'package:fancy_content_creation_web/feature/home/widget/background.dart';
 import 'package:fancy_content_creation_web/feature/home/widget/button.dart';
 import 'package:fancy_content_creation_web/feature/home/content_QA_view/content_QA_view.dart';
@@ -45,6 +45,14 @@ class HomePageState extends ConsumerState<HomePage> {
       ref: ref,
     );
     ref.read(qaListControllerProvider.notifier).clear();
+  }
+
+  Future<void> updateContent() async {
+    await updateContentLogic(
+      context: context,
+      ref: ref,
+    );
+    ref.read(selectedQuestionIdsProvider.notifier).clearQuestionId();
   }
 
   @override
@@ -93,28 +101,15 @@ class HomePageState extends ConsumerState<HomePage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     // Row 2 with three buttons
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        PickThumbnailButton(
-                          file: ref.watch(thumbnailProvider),
-                          onPicked: (file) => ref
-                              .read(thumbnailProvider.notifier)
-                              .setThumbnail(file),
-                        ),
-                        PickDescriptionButton(
-                          file: ref.watch(descriptionProvider),
-                          onPicked: (file) => ref
-                              .read(descriptionProvider.notifier)
-                              .setDescription(file),
-                        ),
+                        PickThumbnailButton(),
+                        PickDescriptionButton(),
                         PickPreviewButton(
                           file: null,
-                          onPicked: (file) => ref
-                              .read(previewProvider.notifier)
-                              .addPreview(file),
                         ),
                         // Add a preview display here if needed
                         if (ref.watch(previewProvider).isNotEmpty)
@@ -142,7 +137,7 @@ class HomePageState extends ConsumerState<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CreateContentButton(onPressed: createContent),
-                        UpdateContentButton(),
+                        UpdateContentButton(onPressed: updateContent),
                       ],
                     ),
                   ],
@@ -150,6 +145,15 @@ class HomePageState extends ConsumerState<HomePage> {
               ),
             ),
           ),
+          if (isLoading)
+            Positioned.fill(
+              child: Container(
+                color: Colors.black54,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            ),
         ],
       ),
     );
