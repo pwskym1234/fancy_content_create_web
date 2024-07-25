@@ -49,7 +49,9 @@ class ApiService {
       {html.File? thumbnail,
       html.File? description,
       int? points,
-      String? introText}) async {
+      String? introText,
+      int? wordCount,
+      double? averageRating}) async {
     String? token = TokenStorage().accessToken;
 
     if (token == null) {
@@ -60,6 +62,8 @@ class ApiService {
       'title': title,
       'category': category,
       if (points != null) 'points': points,
+      if (wordCount != null) 'word_count': wordCount,
+      if (averageRating != null) 'average_rating': averageRating,
       if (introText != null) 'intro_text': introText,
     };
 
@@ -120,6 +124,8 @@ class ApiService {
     String? introText,
     String? category,
     String? status,
+    int? wordCount,
+    double? averageRating,
     List<int>? firstQuestionList,
     List<html.File>? previews,
   }) async {
@@ -132,6 +138,8 @@ class ApiService {
     final formDataMap = <String, dynamic>{
       if (title != null) 'title': title,
       if (points != null) 'points': points,
+      if (wordCount != null) 'word_count': wordCount,
+      if (averageRating != null) 'average_rating': averageRating,
       if (introText != null) 'intro_text': introText,
       if (category != null) 'category': category,
       if (status != null) 'status': status,

@@ -167,3 +167,93 @@ class CustomToggleButtonFourStatesState
     );
   }
 }
+
+class AverageRatingButtonFourStates extends ConsumerStatefulWidget {
+  final double height;
+  final double width;
+
+  const AverageRatingButtonFourStates({
+    super.key,
+    required this.height,
+    required this.width,
+  });
+
+  @override
+  AverageRatingButtonFourStatesState createState() =>
+      AverageRatingButtonFourStatesState();
+}
+
+class AverageRatingButtonFourStatesState
+    extends ConsumerState<AverageRatingButtonFourStates> {
+  int toggleState = 0;
+  final List<double> categories = [4.8, 4.5, 4.3, 4.1];
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomButton(
+      text: categories[toggleState].toString(),
+      onPressed: () {
+        setState(() {
+          toggleState = (toggleState + 1) % categories.length;
+          updateAverageRatingLogic(context, ref, categories[toggleState]);
+        });
+      },
+      height: widget.height,
+      width: widget.width,
+      color: const Color.fromARGB(255, 255, 255, 255),
+      strokeGradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          const Color.fromARGB(255, 255, 255, 255),
+          const Color.fromARGB(255, 0, 0, 0),
+        ],
+      ), // Gradient colors for stroke
+    );
+  }
+}
+
+class WordCountButtonFourStates extends ConsumerStatefulWidget {
+  final double height;
+  final double width;
+
+  const WordCountButtonFourStates({
+    super.key,
+    required this.height,
+    required this.width,
+  });
+
+  @override
+  WordCountButtonFourStatesState createState() =>
+      WordCountButtonFourStatesState();
+}
+
+class WordCountButtonFourStatesState
+    extends ConsumerState<WordCountButtonFourStates> {
+  int toggleState = 0;
+  final List<int> categories = [400, 800, 500, 300];
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomButton(
+      text: categories[toggleState].toString(),
+      onPressed: () {
+        setState(() {
+          toggleState = (toggleState + 1) % categories.length;
+          updateWordCountLogic(context, ref, categories[toggleState]);
+        });
+      },
+      height: widget.height,
+      width: widget.width,
+      color: const Color.fromARGB(255, 255, 255, 255),
+      strokeGradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          const Color.fromARGB(255, 255, 255, 255),
+          const Color.fromARGB(255, 0, 0, 0),
+        ],
+      ), // Gradient colors for stroke
+    );
+  }
+}

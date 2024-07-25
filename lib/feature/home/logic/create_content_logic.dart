@@ -19,6 +19,8 @@ Future<void> createContentLogic({
   final apiService = ref.read(apiServiceProvider);
   final thumbnail = ref.read(thumbnailProvider);
   final description = ref.read(descriptionProvider);
+  final averageRating = ref.read(averageRatingProvider);
+  final wordCount = ref.read(wordCountProvider);
   String contentTitle = contentTitleController.text;
   String intro = introController.text;
   String contentCategory = categoryController;
@@ -34,7 +36,11 @@ Future<void> createContentLogic({
         'Creating content with contentTitle: $contentTitle and category: $contentCategory');
     Response contentResponse = await apiService.createContent(
         contentTitle, contentCategory,
-        thumbnail: thumbnail, description: description, introText: intro);
+        thumbnail: thumbnail,
+        description: description,
+        introText: intro,
+        averageRating: averageRating,
+        wordCount: wordCount);
     int newContentIdFromResponse = contentResponse.data['id'];
     ref
         .read(newContentIdFromResponseProvider.notifier)

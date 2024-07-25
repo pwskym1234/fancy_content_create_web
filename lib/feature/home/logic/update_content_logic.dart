@@ -15,7 +15,8 @@ Future<void> updateContentLogic({
   final contentTitleController = ref.read(contentTitleControllerProvider);
   final introController = ref.read(introControllerProvider);
   final qaController = ref.read(qaListControllerProvider);
-  final contentIDController = ref.read(newContentIdFromResponseProvider);
+  // final contentIDController = ref.read(newContentIdFromResponseProvider);
+  final contentIDController = ref.watch(contentIDControllerProvider);
   final categoryController = ref.read(categoryProvider);
   final statusController = ref.read(statusProvider);
   final apiService = ref.read(apiServiceProvider);
@@ -23,10 +24,12 @@ Future<void> updateContentLogic({
   final description = ref.read(descriptionProvider);
   final firstQuestionList = ref.read(selectedQuestionIdsProvider);
   final preview = ref.read(previewProvider);
+  final averageRating = ref.read(averageRatingProvider);
+  final wordCount = ref.read(wordCountProvider);
   String qaText = qaController.text;
   String introText = introController.text;
   String titleText = contentTitleController.text;
-  int? contentID = contentIDController;
+  int? contentID = int.tryParse(contentIDController.text);
   String? status =
       statusController.isNotEmpty == true ? statusController : null;
   String? category =
@@ -50,7 +53,7 @@ Future<void> updateContentLogic({
     debugPrint('Updating content with contentID: $contentID');
 
     Response contentResponse = await apiService.updateContent(
-      contentID,
+      contentID!,
       thumbnail: thumbnail,
       description: description,
       status: status,
@@ -58,6 +61,8 @@ Future<void> updateContentLogic({
       previews: preview,
       introText: introText.isNotEmpty ? introText : null,
       title: titleText.isNotEmpty ? titleText : null,
+      averageRating: averageRating,
+      wordCount: wordCount,
       firstQuestionList:
           firstQuestionList.isNotEmpty ? firstQuestionList : null,
     );

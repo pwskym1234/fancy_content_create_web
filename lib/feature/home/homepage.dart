@@ -91,6 +91,16 @@ class HomePageState extends ConsumerState<HomePage> {
                           ),
                         ),
                         const SizedBox(width: 20),
+                        AverageRatingButtonFourStates(
+                          height: 60,
+                          width: 80,
+                        ),
+                        const SizedBox(width: 20),
+                        WordCountButtonFourStates(
+                          height: 60,
+                          width: 80,
+                        ),
+                        const SizedBox(width: 20),
                         CustomToggleButtonTwoStates(
                           height: 60,
                           width: 140,

@@ -11,6 +11,15 @@ void updateCategoryLogic(BuildContext context, WidgetRef ref, String category) {
   ref.read(categoryProvider.notifier).state = category;
 }
 
+void updateAverageRatingLogic(
+    BuildContext context, WidgetRef ref, double averageRating) {
+  ref.read(averageRatingProvider.notifier).state = averageRating;
+}
+
+void updateWordCountLogic(BuildContext context, WidgetRef ref, int wordCount) {
+  ref.read(wordCountProvider.notifier).state = wordCount;
+}
+
 String findPreviousQuestionText(int answerIndex, List<String> formattedQAList) {
   for (int i = answerIndex; i >= 0; i--) {
     if (formattedQAList[i].startsWith('Q:')) {

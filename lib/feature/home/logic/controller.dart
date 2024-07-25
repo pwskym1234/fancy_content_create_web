@@ -12,6 +12,8 @@ final introControllerProvider = Provider((ref) => TextEditingController());
 final contentIDControllerProvider = Provider((ref) => TextEditingController());
 final statusProvider = StateProvider<String>((ref) => 'INACTIVE');
 final categoryProvider = StateProvider<String>((ref) => 'LOVE');
+final averageRatingProvider = StateProvider<double>((ref) => 4.8);
+final wordCountProvider = StateProvider<int>((ref) => 400);
 final fetchedAnswerQuestionMapProvider = StateNotifierProvider<
     FetchedAnswerQuestionMapNotifier, List<Map<dynamic, dynamic>>>(
   (ref) => FetchedAnswerQuestionMapNotifier(),
