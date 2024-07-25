@@ -1,4 +1,4 @@
-import 'package:fancy_content_creation_web/%08widgets/custom_buttons.dart';
+import 'package:fancy_content_creation_web/widgets/custom_buttons.dart';
 import 'package:fancy_content_creation_web/feature/home/content_QA_view/qaView.dart';
 import 'package:fancy_content_creation_web/feature/home/logic/controller.dart';
 import 'package:fancy_content_creation_web/feature/home/logic/fetch_logic.dart';

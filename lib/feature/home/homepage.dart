@@ -5,9 +5,9 @@ import 'package:fancy_content_creation_web/feature/home/logic/update_content_log
 import 'package:fancy_content_creation_web/feature/home/widget/background.dart';
 import 'package:fancy_content_creation_web/feature/home/widget/button.dart';
 import 'package:fancy_content_creation_web/feature/home/content_QA_view/content_QA_view.dart';
-import 'package:fancy_content_creation_web/%08widgets/glassmorphicContainer.dart';
+import 'package:fancy_content_creation_web/widgets/glassmorphicContainer.dart';
 import 'package:fancy_content_creation_web/feature/home/widget/textfield.dart';
-import 'package:fancy_content_creation_web/%08widgets/custom_buttons.dart';
+import 'package:fancy_content_creation_web/widgets/custom_buttons.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

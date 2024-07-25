@@ -1,6 +1,6 @@
 // lib/widgets/custom_textfields.dart
 import 'package:fancy_content_creation_web/feature/home/logic/controller.dart';
-import 'package:fancy_content_creation_web/%08widgets/custom_textfields.dart';
+import 'package:fancy_content_creation_web/widgets/custom_textfields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

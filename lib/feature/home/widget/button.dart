@@ -1,4 +1,4 @@
-import 'package:fancy_content_creation_web/%08widgets/custom_buttons.dart';
+import 'package:fancy_content_creation_web/widgets/custom_buttons.dart';
 import 'package:fancy_content_creation_web/feature/home/logic/controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:universal_html/html.dart' as html;
