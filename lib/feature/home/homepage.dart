@@ -1,3 +1,4 @@
+import 'package:fancy_content_creation_web/feature/home/control_list_view/control_list_view.dart';
 import 'package:fancy_content_creation_web/feature/home/logic/controller.dart';
 import 'package:fancy_content_creation_web/feature/home/logic/create_content_logic.dart';
 import 'package:fancy_content_creation_web/feature/home/logic/login_logic.dart';
@@ -63,12 +64,7 @@ class HomePageState extends ConsumerState<HomePage> {
       body: Stack(
         children: [
           Background(),
-          Positioned.fill(
-            right: 0,
-            left: MediaQuery.of(context).size.width / 2,
-            child: const ContentQaView(),
-          ),
-          // Scrollable left column
+          // Left column with content title and buttons
           Positioned.fill(
             left: 0,
             right: MediaQuery.of(context).size.width / 2,
@@ -154,6 +150,22 @@ class HomePageState extends ConsumerState<HomePage> {
                   ],
                 ),
               ),
+            ),
+          ),
+          // Right column with content QA view and additional list
+          Positioned.fill(
+            right: 0,
+            left: MediaQuery.of(context).size.width / 2,
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 8, // Adjusted flex for ContentQaView
+                  child: const ContentQaView(),
+                ),
+                Expanded(
+                    flex: 2, // Adjusted flex for the list
+                    child: ControlListView()),
+              ],
             ),
           ),
           if (isLoading)

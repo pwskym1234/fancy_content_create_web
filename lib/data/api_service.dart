@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'token_storage.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -275,5 +276,29 @@ class ApiService {
       }),
     );
     return response;
+  }
+
+  Future<Response> deleteContent(int contentId) async {
+    String? token = TokenStorage().accessToken;
+    if (token == null) {
+      throw Exception('Token is not available');
+    }
+    try {
+      final response = await _dio.delete(
+        '$baseUrl/content/admin',
+        queryParameters: {
+          'content_id': contentId,
+        },
+        options: Options(headers: {
+          'Authorization': 'Bearer $token',
+        }),
+      );
+      debugPrint('Deleted');
+      return response;
+    } catch (e) {
+      // 오류 처리
+      debugPrint('Failed to delete content: $e');
+      rethrow;
+    }
   }
 }

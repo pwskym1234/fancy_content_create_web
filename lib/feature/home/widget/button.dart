@@ -302,3 +302,29 @@ class DiselectAllButton extends StatelessWidget {
     );
   }
 }
+
+class SelectListButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final String text;
+  const SelectListButton(
+      {super.key, required this.onPressed, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomButton(
+      color: Color.fromARGB(255, 255, 255, 255),
+      text: text,
+      onPressed: onPressed,
+      height: 50,
+      width: 140,
+      strokeGradient: const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          const Color.fromARGB(255, 255, 255, 255),
+          const Color.fromARGB(255, 0, 0, 0),
+        ],
+      ),
+    );
+  }
+}

@@ -1,7 +1,15 @@
+import 'package:fancy_content_creation_web/data/api_service.dart';
+import 'package:fancy_content_creation_web/data/model/content_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:universal_html/html.dart' as html;
 
+final contentListProvider =
+    StateNotifierProvider<ContentListNotifier, List<ContentItem>>((ref) {
+  return ContentListNotifier(ref.read);
+});
+
+final selectedStateProvider = StateProvider<String>((ref) => 'active');
 final contentTitleControllerProvider =
     Provider((ref) => TextEditingController());
 final qaListControllerProvider = StateNotifierProvider<
@@ -45,6 +53,36 @@ final currentGroupProvider =
     StateNotifierProvider<CurrentGroupNotifier, List<Map<dynamic, dynamic>>>(
   (ref) => CurrentGroupNotifier(),
 );
+
+class ContentListNotifier extends StateNotifier<List<ContentItem>> {
+  final Reader read;
+  ContentListNotifier(this.read) : super([]);
+
+  Future<void> fetchContentList(String status) async {
+    try {
+      int offset = 0;
+      bool hasMore = true;
+      List<ContentItem> contentList = [];
+
+      while (hasMore) {
+        final response = await read(apiServiceProvider)
+            .listContentForAdmin(status, offset, 100);
+        List<dynamic> data = response.data;
+        if (data.isEmpty) {
+          hasMore = false;
+        } else {
+          contentList.addAll(data.map(
+              (item) => ContentItem(id: item['id'], title: item['title'])));
+          offset += 100;
+        }
+      }
+
+      state = contentList;
+    } catch (e) {
+      debugPrint('Error fetching content list: $e');
+    }
+  }
+}
 
 class CurrentGroupNotifier extends StateNotifier<List<Map<dynamic, dynamic>>> {
   CurrentGroupNotifier() : super([]);
