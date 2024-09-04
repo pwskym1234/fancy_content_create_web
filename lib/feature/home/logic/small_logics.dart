@@ -40,8 +40,10 @@ String findNextQuestionText(int answerIndex, List<String> formattedQAList) {
 
 List<String> splitText(String text) {
   debugPrint('Input text: $text');
+  String cleanedText = text.replaceAll('\n', '').replaceAll('\r', '');
 
-  List<String> questionsAndAnswers = text.split(RegExp(r'(?=Q:)|(?=A:)'));
+  List<String> questionsAndAnswers =
+      cleanedText.split(RegExp(r'(?=Q:)|(?=A:)'));
   debugPrint('Split into questions and answers: $questionsAndAnswers');
 
   List<String> qaList = [];

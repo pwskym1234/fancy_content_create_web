@@ -53,3 +53,16 @@ class QAListTextField extends ConsumerWidget {
     );
   }
 }
+
+class QAListTextField2 extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return CustomTextField(
+      controller: ref.watch(qaListControllerProvider),
+      hintText: 'Q&A list',
+      hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+      textStyle: const TextStyle(color: Colors.white),
+      maxLines: 7,
+    );
+  }
+}

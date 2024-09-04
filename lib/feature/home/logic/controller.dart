@@ -12,9 +12,9 @@ final contentListProvider =
 final selectedStateProvider = StateProvider<String>((ref) => 'active');
 final contentTitleControllerProvider =
     Provider((ref) => TextEditingController());
-final qaListControllerProvider = StateNotifierProvider<
-    QAListControllerNotifierNotifier, TextEditingController>(
-  (ref) => QAListControllerNotifierNotifier(),
+final qaListControllerProvider =
+    StateNotifierProvider<QAListControllerNotifier, TextEditingController>(
+  (ref) => QAListControllerNotifier(),
 );
 final introControllerProvider = Provider((ref) => TextEditingController());
 final contentIDControllerProvider = Provider((ref) => TextEditingController());
@@ -107,9 +107,8 @@ class GroupedQADataNotifier
   }
 }
 
-class QAListControllerNotifierNotifier
-    extends StateNotifier<TextEditingController> {
-  QAListControllerNotifierNotifier() : super(TextEditingController());
+class QAListControllerNotifier extends StateNotifier<TextEditingController> {
+  QAListControllerNotifier() : super(TextEditingController());
 
   void clear() {
     state.clear();

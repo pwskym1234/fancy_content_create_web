@@ -6,6 +6,7 @@ import 'package:fancy_content_creation_web/feature/home/logic/update_content_log
 import 'package:fancy_content_creation_web/feature/home/widget/background.dart';
 import 'package:fancy_content_creation_web/feature/home/widget/button.dart';
 import 'package:fancy_content_creation_web/feature/home/content_QA_view/content_QA_view.dart';
+import 'package:fancy_content_creation_web/feature/update_page/update_page.dart';
 import 'package:fancy_content_creation_web/widgets/glassmorphicContainer.dart';
 import 'package:fancy_content_creation_web/feature/home/widget/textfield.dart';
 import 'package:fancy_content_creation_web/widgets/custom_buttons.dart';
@@ -57,6 +58,13 @@ class HomePageState extends ConsumerState<HomePage> {
     ref.read(selectedQuestionIdsProvider.notifier).clearQuestionId();
   }
 
+  void navigateToNewPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const UpdatePage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,6 +81,11 @@ class HomePageState extends ConsumerState<HomePage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: navigateToNewPage,
+                      child: const Text('Go to New Page'),
+                    ),
                     // Content title
                     GlassmorphicContainer(
                       child: ContentTitleTextField(),
@@ -109,6 +122,7 @@ class HomePageState extends ConsumerState<HomePage> {
                       ],
                     ),
                     const SizedBox(height: 10),
+
                     // Row 2 with three buttons
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
